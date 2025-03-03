@@ -1,6 +1,6 @@
 ## Devloped by: Sreevalsan V
 ## Register Number: 212223240158
-## Date: 3-03-2025
+## Date: 4-03-2025
 
 # Ex.No:04           FIT ARMA MODEL FOR TIME SERIES
 
@@ -88,8 +88,8 @@ theta2_arma22 = arma22_model.params['ma.L2']
 ```
 Simulate ARMA(2,2) Process
 ```py
-ar_2 = np.array([1, -phi1_arma22, -phi2_arma22])  
-ma_2 = np.array([1, theta1_arma22, theta2_arma22])  
+ar2 = np.array([1, -phi1_arma22, -phi2_arma22])  
+ma2 = np.array([1, theta1_arma22, theta2_arma22])  
 ARMA_2 = ArmaProcess(ar2, ma2).generate_sample(nsample=N*10)
 plt.plot(ARMA_2)
 plt.title('Simulated ARMA(2,2) Process')
@@ -109,40 +109,40 @@ plt.show()
 
 Original data:
 
-![alt text](image-17.png)
+![alt text](image.png)
 
 Partial Autocorrelation:-
 
-![alt text](image-9.png)
+![alt text](image-1.png)
 
 Autocorrelation:-
 
-![alt text](image-8.png)
+![alt text](image-2.png)
 
 SIMULATED ARMA(1,1) PROCESS:
 
-![alt text](image-11.png)
+![alt text](image-3.png)
 
 Partial Autocorrelation:-
 
-![alt text](image-13.png)
+![alt text](image-5.png)
 
 Autocorrelation:-
 
-![alt text](image-12.png)
+![alt text](image-4.png)
 
 
 SIMULATED ARMA(2,2) PROCESS:
 
-![alt text](image-14.png)
+![alt text](image-6.png)
 
 Partial Autocorrelation
 
-![alt text](image-16.png)
+![alt text](image-8.png)
 
 Autocorrelation
 
-![alt text](image-15.png)
+![alt text](image-7.png)
 
 ### RESULT:
 
