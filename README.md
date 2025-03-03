@@ -26,22 +26,45 @@ data points using the ArmaProcess class. Plot the generated time series and set 
 
 Import necessary Modules and Functions
 ```py
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.arima_process import ArmaProcess
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 ```
-
-Declare required variables and set figure size
+Load dataset
+```py
+data=pd.read_csv('/content/AirPassengers.csv')
+```
+Declare required variables and set figure size, and visualise the data
 ```py
 N=1000
-plt.rcParams['figure.figsize'] = [10, 7.5] #plt.rcParams is a dictionary-like object in Matplotlib that stores global settings for plots. The "rc" in rcParams stands for runtime configuration. It allows you to customize default styles for figures, fonts, colors, sizes, and more.
-```
+plt.rcParams['figure.figsize'] = [12, 6] #plt.rcParams is a dictionary-like object in Matplotlib that stores global settings for plots. The "rc" in rcParams stands for runtime configuration. It allows you to customize default styles for figures, fonts, colors, sizes, and more.
 
+X=data['#Passengers']
+plt.plot(X)
+plt.title('Original Data')
+plt.show()
+plt.subplot(2, 1, 1)
+plot_acf(X, lags=len(X)/4, ax=plt.gca())
+plt.title('Original Data ACF')
+plt.subplot(2, 1, 2)
+plot_pacf(X, lags=len(X)/4, ax=plt.gca())
+plt.title('Original Data PACF')
+plt.tight_layout()
+plt.show()
+```
+Fitting the ARMA(1,1) model and deriving parameters
+```py
+arma11_model = ARIMA(X, order=(1, 0, 1)).fit()
+phi1_arma11 = arma11_model.params['ar.L1']
+theta1_arma11 = arma11_model.params['ma.L1']
+```
 Simulate ARMA(1,1) Process
 ```py
-ar1 = np.array([1, 0.4])
-ma1 = np.array([1, 0.6])
+ar1 = np.array([1, -phi1_arma11])
+ma1 = np.array([1, theta1_arma11])
 ARMA_1 = ArmaProcess(ar1, ma1).generate_sample(nsample=N)
 plt.plot(ARMA_1)
 plt.title('Simulated ARMA(1,1) Process')
@@ -55,10 +78,18 @@ plt.show()
 plot_pacf(ARMA_1)
 plt.show()
 ```
+Fitting the ARMA(1,1) model and deriving parameters
+```py
+arma22_model = ARIMA(X, order=(2, 0, 2)).fit()
+phi1_arma22 = arma22_model.params['ar.L1']
+phi2_arma22 = arma22_model.params['ar.L2']
+theta1_arma22 = arma22_model.params['ma.L1']
+theta2_arma22 = arma22_model.params['ma.L2']
+```
 Simulate ARMA(2,2) Process
 ```py
-ar2 = np.array([1, 0.4, 0.2])
-ma2 = np.array([1, 0.6, 0.7])
+ar_2 = np.array([1, -phi1_arma22, -phi2_arma22])  
+ma_2 = np.array([1, theta1_arma22, theta2_arma22])  
 ARMA_2 = ArmaProcess(ar2, ma2).generate_sample(nsample=N*10)
 plt.plot(ARMA_2)
 plt.title('Simulated ARMA(2,2) Process')
@@ -75,30 +106,43 @@ plt.show()
 ```
 
 ### OUTPUT:
-SIMULATED ARMA(1,1) PROCESS:
 
-![alt text](image-6.png)
+Original data:
+
+![alt text](image-17.png)
 
 Partial Autocorrelation:-
 
-![alt text](image-2.png)
+![alt text](image-9.png)
 
 Autocorrelation:-
 
-![alt text](image-1.png)
+![alt text](image-8.png)
+
+SIMULATED ARMA(1,1) PROCESS:
+
+![alt text](image-11.png)
+
+Partial Autocorrelation:-
+
+![alt text](image-13.png)
+
+Autocorrelation:-
+
+![alt text](image-12.png)
 
 
 SIMULATED ARMA(2,2) PROCESS:
 
-![alt text](image-7.png)
+![alt text](image-14.png)
 
 Partial Autocorrelation
 
-![alt text](image-4.png)
+![alt text](image-16.png)
 
 Autocorrelation
 
-![alt text](image-5.png)
+![alt text](image-15.png)
 
 ### RESULT:
 
